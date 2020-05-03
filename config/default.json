@@ -1,0 +1,12 @@
+{
+  "port": 3333,
+  "host": "0.0.0.0",
+  "log": "info",
+  "timezone": "America/Sao_Paulo",
+  "services": {
+    "database": {
+      "host": "mongo",
+      "port": "27017"
+    }
+  }
+}

@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  api:
+    build:
+      context: .
+    image: image/api-rest
+    container_name: template-mongo-node-api
+    volumes:
+      - .:/usr/src/app/
+    ports:
+      - 3333:3333
+    command: yarn start
+    depends_on:
+      - mongo
+    networks:
+      - backend
+
+  mongo:
+    container_name: mongo-node-api
+    image: mongo:4.2.3-bionic
+    ports:
+      - 27017:27017
+    volumes:
+      - ./data/:/data/db
+    networks:
+      - backend
+    env_file:
+    - .env
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
+
+networks:
+  backend:
+    driver: bridge
