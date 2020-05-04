@@ -11,14 +11,55 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3333/health",
-					"protocol": "http",
+					"raw": "{{env}}/health",
 					"host": [
-						"localhost"
+						"{{env}}"
 					],
-					"port": "3333",
 					"path": [
 						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get user",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{env}}/users",
+					"host": [
+						"{{env}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "post user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"{{name}}\",\n\t\"password\": \"{{password}}\",\n\t\"email\": \"{{email}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{env}}/users",
+					"host": [
+						"{{env}}"
+					],
+					"path": [
+						"users"
 					]
 				}
 			},
