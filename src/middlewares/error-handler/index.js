@@ -1,6 +1,7 @@
 const { isCelebrate } = require('celebrate');
 const errorFormatter = require('./../../formatters/response/errors');
 const RequestError = require('./../../../utils/errors/request');
+const UnauthorizedError = require('./../../../utils/errors/unauthorized');
 
 function errorHandler(err, req, res, next) { // eslint-disable-line
   if (isCelebrate(err)) {
@@ -24,6 +25,14 @@ function errorHandler(err, req, res, next) { // eslint-disable-line
   // request validation error
   if (err instanceof RequestError && err.status === 400) {
     return errorFormatter.badRequestResponse(res, {
+      err,
+      code: err.code,
+      message: err.message,
+    });
+  }
+
+  if (err instanceof UnauthorizedError && err.status === 401) {
+    return errorFormatter.unauthorizedResponse(res, {
       err,
       code: err.code,
       message: err.message,

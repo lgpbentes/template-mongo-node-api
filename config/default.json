@@ -8,5 +8,10 @@
       "host": "mongo",
       "port": "27017"
     }
+  },
+  "jwtConfig": {
+    "algorithm": "HS256",
+    "issuer": "template.com.br",
+    "lifetime": 2592000
   }
 }

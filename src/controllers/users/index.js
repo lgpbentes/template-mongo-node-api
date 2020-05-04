@@ -14,7 +14,7 @@ const UsersController = {
         user,
       };
 
-      return res.status(200).json(response);
+      return res.status(201).json(response);
     } catch (e) {
       logger.error(`Users Controller :: handlePost ${e.message}`);
       logger.debug(e);
