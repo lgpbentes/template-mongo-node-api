@@ -1,7 +1,7 @@
 # Template for Rest API using NodeJs and MongoDB
 Starter pack to build API projects with NodeJs, running Mongo as database.
 
-# Dependencies
+## Dependencies
 - Docker
 - Docker Compose
 - Makefile
