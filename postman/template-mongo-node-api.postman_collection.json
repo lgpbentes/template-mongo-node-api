@@ -6,7 +6,174 @@
 	},
 	"item": [
 		{
+			"name": "invalid",
+			"item": [
+				{
+					"name": "post user invalid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "827a309f-5250-4cfa-957b-895eb82e422d",
+								"exec": [
+									"const response = JSON.parse(responseBody);",
+									"",
+									"pm.test('Status code should be 400', () => {",
+									"    pm.expect(responseCode.code).to.be.eql(400);",
+									"});",
+									"",
+									"pm.test('Error message should be ok', () => {",
+									"    pm.expect(response.code).to.be.eql(1001);",
+									"    pm.expect(response.message).to.be.eql('\\\"email\\\" is required');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"{{name}}\",\n\t\"password\": \"{{password}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{env}}/users",
+							"host": [
+								"{{env}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "auth invalid email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7f273b9a-db36-4aa1-ae0a-bc8970dc4567",
+								"exec": [
+									"const response = JSON.parse(responseBody);",
+									"",
+									"pm.test('Status code should be 401', () => {",
+									"    pm.expect(responseCode.code).to.be.eql(401);",
+									"});",
+									"",
+									"pm.test('Error message should be ok', () => {",
+									"    pm.expect(response.code).to.be.eql(11001);",
+									"    pm.expect(response.message).to.be.eql('Invalid email.');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"invalid@example.com\",\n\t\"password\": \"123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{env}}/auth",
+							"host": [
+								"{{env}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "auth invalid password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8e196a05-cedc-435d-811f-b85be836b777",
+								"exec": [
+									"const response = JSON.parse(responseBody);",
+									"",
+									"pm.test('Status code should be 401', () => {",
+									"    pm.expect(responseCode.code).to.be.eql(401);",
+									"});",
+									"",
+									"pm.test('Error message should be ok', () => {",
+									"    pm.expect(response.code).to.be.eql(11002);",
+									"    pm.expect(response.message).to.be.eql('Invalid credentials.');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"{{email}}\",\n\t\"password\": \"invalidpassword\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{env}}/auth",
+							"host": [
+								"{{env}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
 			"name": "health",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3e839ea5-aee4-4ae7-b82c-77c4ccc0bbdf",
+						"exec": [
+							"const response = JSON.parse(responseBody);",
+							"",
+							"pm.test('Status code should be 200', () => {",
+							"    pm.expect(responseCode.code).to.be.eql(200);",
+							"});",
+							"",
+							"pm.test('Status property should ok', () => {",
+							"    pm.expect(response.status).to.be.eql(\"ok\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -24,6 +191,43 @@
 		},
 		{
 			"name": "post user",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "0c564f50-ab30-4fdb-8bb4-c2361cc40f2d",
+						"exec": [
+							"const randomEmail = `${Date.now()}@example.com`",
+							"",
+							"pm.environment.set('email', randomEmail);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "a9366278-9b06-4d73-bfeb-f0cdefc5a76f",
+						"exec": [
+							"const response = JSON.parse(responseBody);",
+							"",
+							"pm.test('Status code should be 201', () => {",
+							"    pm.expect(responseCode.code).to.be.eql(201);",
+							"});",
+							"",
+							"pm.test('Error message should be ok', () => {",
+							"    pm.expect(response.status).to.be.eql('CREATED');",
+							"});",
+							"",
+							"pm.test('Response should have property \"user\"', () => {",
+							"    pm.expect(response).to.have.property('user');",
+							"    pm.expect(response.user.email).to.be.eql(pm.environment.get('email'));",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -49,58 +253,6 @@
 			"response": []
 		},
 		{
-			"name": "auth invalid email",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"email\": \"invalid@example.com\",\n\t\"password\": \"123\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{env}}/auth",
-					"host": [
-						"{{env}}"
-					],
-					"path": [
-						"auth"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "auth invalid password",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"email\": \"{{email}}\",\n\t\"password\": \"invalidpassword\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{env}}/auth",
-					"host": [
-						"{{env}}"
-					],
-					"path": [
-						"auth"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "auth user",
 			"event": [
 				{
@@ -109,6 +261,14 @@
 						"id": "8389d7b9-240a-4863-a23e-80700d5526b1",
 						"exec": [
 							"const response = JSON.parse(responseBody);",
+							"",
+							"pm.test('Status code should be 202', () => {",
+							"    pm.expect(responseCode.code).to.be.eql(202);",
+							"});",
+							"",
+							"pm.test('Response should have property \"token\"', () => {",
+							"    pm.expect(response).to.have.property('token');",
+							"});",
 							"",
 							"pm.environment.set('token', response.token);"
 						],
@@ -141,39 +301,45 @@
 			"response": []
 		},
 		{
-			"name": "get user with basic auth",
-			"request": {
-				"auth": {
-					"type": "basic",
-					"basic": [
-						{
-							"key": "password",
-							"value": "basicpasswd",
-							"type": "string"
-						},
-						{
-							"key": "username",
-							"value": "basiclogin",
-							"type": "string"
-						}
-					]
+			"name": "get user",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "b00355fd-8aa2-475f-ad4a-dd03af36fa5b",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
 				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{env}}/users",
-					"host": [
-						"{{env}}"
-					],
-					"path": [
-						"users"
-					]
+				{
+					"listen": "test",
+					"script": {
+						"id": "ec2847a7-8191-4292-8266-0009753d0850",
+						"exec": [
+							"const response = JSON.parse(responseBody);",
+							"",
+							"pm.test('Status code should be 200', () => {",
+							"    pm.expect(responseCode.code).to.be.eql(200);",
+							"});",
+							"",
+							"pm.test('Response should have property \"user\"', () => {",
+							"    pm.expect(response).to.have.property('user');",
+							"});",
+							"",
+							"pm.test('Response user should be an object', () => {",
+							"    pm.expect(response.user).to.be.an('object');",
+							"});",
+							"",
+							"pm.test('User response should be for logged user', () => {",
+							"    pm.expect(response.user.email).to.be.eql(pm.environment.get('email'));",
+							"});"
+						],
+						"type": "text/javascript"
+					}
 				}
-			},
-			"response": []
-		},
-		{
-			"name": "get user with bearer auth",
+			],
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -194,6 +360,107 @@
 					],
 					"path": [
 						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get items",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6f654ea7-c3e3-47ad-b263-571788c550bf",
+						"exec": [
+							"const response = JSON.parse(responseBody);",
+							"",
+							"pm.test('Status code should be 200', () => {",
+							"    pm.expect(responseCode.code).to.be.eql(200);",
+							"});",
+							"",
+							"pm.test('Response should be an array', () => {",
+							"    pm.expect(response).to.be.an('array');",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{env}}/items",
+					"host": [
+						"{{env}}"
+					],
+					"path": [
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get items with basic auth",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9f057f17-e887-430c-ac68-92f61f71ae94",
+						"exec": [
+							"const response = JSON.parse(responseBody);",
+							"",
+							"pm.test('Status code should be 200', () => {",
+							"    pm.expect(responseCode.code).to.be.eql(200);",
+							"});",
+							"",
+							"pm.test('Response should be an array', () => {",
+							"    pm.expect(response).to.be.an('array');",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "basicpasswd",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "basiclogin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{env}}/items",
+					"host": [
+						"{{env}}"
+					],
+					"path": [
+						"items"
 					]
 				}
 			},
