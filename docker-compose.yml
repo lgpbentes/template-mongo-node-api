@@ -26,7 +26,7 @@ services:
     networks:
       - backend
     env_file:
-    - .env
+      - .env
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
       MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
