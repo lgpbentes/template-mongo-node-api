@@ -1,4 +1,6 @@
 #!make
+include .env
+export $(shell sed 's/=.*//' .env)
 
 build:
 	docker-compose build
@@ -25,4 +27,5 @@ bash:
 	docker-compose exec api sh
 
 bash-mongo:
-	docker-compose exec mongo mongo --username template --password
+	docker-compose exec mongo mongo --username $(DB_USER) --password
+	
