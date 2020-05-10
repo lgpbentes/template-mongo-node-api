@@ -1,5 +1,3 @@
-const logger = require('./../../../../utils/logger');
-
 const ResponseFormatter = {
   errorResponse(res, err) {
     const errorMsg = { code: 1000, message: 'Internal server error' };
@@ -16,7 +14,7 @@ const ResponseFormatter = {
       .jsonp(errorMsg);
   },
 
-  badRequestResponse(res, { err, code, message }) {
+  badRequestResponse(res, { code, message }) {
     const errorMsg = { code: 1001, message: 'Bad request' };
 
     if (code) {
@@ -31,7 +29,7 @@ const ResponseFormatter = {
       .status(400)
       .jsonp(errorMsg);
   },
-  unauthorizedResponse(res, { err, code, message }) {
+  unauthorizedResponse(res, { code, message }) {
     const errorMsg = { code: 1002, message: 'Unauthorized Access' };
 
     if (code) {

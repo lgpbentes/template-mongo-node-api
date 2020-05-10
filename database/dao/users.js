@@ -21,21 +21,21 @@ const UsersDAO = {
       if (err.code === 11000) {
         throw new RequestError({
           code: 11000,
-          message: 'E-mail already registered'
+          message: 'E-mail already registered',
         });
       }
 
       throw err;
     }
   },
-  readAll: async () => {
-    const foundUsers = await Users.find();
+  read: async ({ email }) => {
+    const foundUser = await Users.findOne({ email });
 
-    return foundUsers;
+    return foundUser;
   },
   checkUser: async ({ email, password }) => {
     const user = await Users.findOne({ email });
-    
+
     if (_.isEmpty(user)) {
       throw new UnauthorizedError({
         code: 11001,
@@ -55,7 +55,7 @@ const UsersDAO = {
     }
 
     return user;
-  }
+  },
 };
 
 module.exports = UsersDAO;

@@ -15,6 +15,12 @@ const UsersRequestFormatter = {
     }
     return formattedParams;
   },
+
+  formatGet(reqParams) {
+    const formattedParams = RequestFormatter.format(reqParams);
+
+    return formattedParams;
+  },
 };
 
 module.exports = UsersRequestFormatter;

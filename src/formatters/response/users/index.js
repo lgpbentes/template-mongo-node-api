@@ -3,14 +3,15 @@ const _ = require('lodash');
 const UsersResponseFormatter = {
   format(response) {
     const formattedResponse = {};
-    formattedResponse.users = response.map(user => _.pick(
-      user,
+
+    formattedResponse.user = _.pick(
+      response,
       [
         'id',
         'name',
         'email',
       ],
-    ));
+    );
 
     return formattedResponse;
   },

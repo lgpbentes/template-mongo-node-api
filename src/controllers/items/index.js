@@ -7,14 +7,14 @@ const ItemsController = {
         {
           id: 1,
           name: 'name for item 1',
-          image: 'https://via.placeholder.com/200'
+          image: 'https://via.placeholder.com/200',
         },
         {
           id: 2,
           name: 'name for item 2',
-          image: 'https://via.placeholder.com/200'
-        }
-      ]
+          image: 'https://via.placeholder.com/200',
+        },
+      ];
 
       return res.status(200).json(response);
     } catch (e) {

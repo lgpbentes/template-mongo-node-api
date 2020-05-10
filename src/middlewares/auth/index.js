@@ -58,7 +58,7 @@ const auth = {
         : auth.basic(req, res, next);
     }
     return auth.basic(req, res, next);
-  }
+  },
 };
 
 module.exports = auth;

@@ -25,7 +25,10 @@ const UsersController = {
   },
   async handleGet(req, res, next) {
     try {
-      const result = await UsersDAO.readAll();
+      const reqParams = UsersRequestFormatter.formatGet(req);
+      const { email } = reqParams;
+
+      const result = await UsersDAO.read({ email });
       const response = UsersResponseFormatter.format(result);
 
       return res.status(200).json(response);
