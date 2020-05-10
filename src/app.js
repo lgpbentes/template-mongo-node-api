@@ -7,6 +7,7 @@ const {
   healthRoute,
   usersRoute,
   authRoute,
+  itemsRoute,
 } = require('./routes');
 
 const app = express();
@@ -19,6 +20,8 @@ app.use('/health', healthRoute);
 app.use('/users', usersRoute);
 
 app.use('/auth', authRoute);
+
+app.use('/items', itemsRoute);
 
 app.use(errorHandler);
 
